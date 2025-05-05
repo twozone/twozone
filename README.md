@@ -85,8 +85,7 @@
 1. 앱에 포함된 정적 JSON 파일 (assets)
 2. 또는 Firebase/REST API에서 동적 로딩
 
-
-OpenWorldGame 개발 계획
+📌OpenWorldGame 개발 계획
 
 1. 프로젝트 세팅
 언어 : JAVA
