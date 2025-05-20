@@ -11,7 +11,7 @@
 
 (프로젝트 수정)
 
-제목 : ⏰GameAlarm(임시)
+제목 : GameCalendar(임시)
 
 👥2021(이공이일)조 
 
@@ -189,12 +189,10 @@ Java 기반 구현
 게임 추가 : 게임 이름과 아이콘 선택 후 저장
 일정 추가 : 일정 제목, 날짜, 시간, 메모 입력 후 저장
 반복 일정 설정 : 매일, 매주, 특정 요일 반복 선택
-알림 설정 : 시간 도래시 Notification 발송
 일정 공유 : JSON 또는 QR을 통한 내보내기 / 가져오기
 
 4-1 유스케이스 실현
 일정 저장 → SharedPreferences에 JSON 저장
-알림 설정 → AlarmManager 사용해 예약
 공유 기능 → Gson으로 변환 → Intent 또는 QR코드 생성
 
 5. 논리 뷰
@@ -228,8 +226,6 @@ JSON 저장/불러오기 처리
 SharedPreferences에 "games와 "schedule키로 저장
 
 6. 프로세스 뷰
-알람 설정 시 AlarmManager 사용
-알람 시간 도달 시 AlarmReceiver(BroadcastReceiver)가 Notification 생성
 반복 일정은 앱 시작 시 재등록 처리
 
 7. 배포 뷰
@@ -240,12 +236,11 @@ SharedPreferences에 "games와 "schedule키로 저장
 8. 구현 뷰
 8-1 개요
 Activity 위주로 구성된 단일 모듈 구조
-주요 구성요소 : UI 레이어, 데이터 레이어, 알림 처리 레이어
+주요 구성요소 : UI 레이어, 데이터 레이어
 
 8-2 레이어 구성
 UI 레이어 : MainActivity, GameDetailActivity, ScheduleAddActivity
 데이터 레이어 : Game, Schedule, DataManager
-서비스 레이어 : AlarmReceiver, 알람 등록 로직
 
 9. 데이터 뷰
 형태 : JSON(문자열 형태로 저장)
@@ -277,6 +272,9 @@ RecyclerView 사용으로 UI 렌더링 최적화
 확장성: 서버 연동 및 Firebase 기능 향후 추가 가능
 안정성: Android 시스템 API 사용으로 안정성 확보
 경량성: 로컬 저장소만 활용해 빠른 실행
+
+1. MainActivity.java(메인화면 구현)
+![image](https://github.com/user-attachments/assets/082a3beb-2181-43f6-8b9e-929f415f7d90)
 
 
 
