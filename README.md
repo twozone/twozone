@@ -273,8 +273,6 @@ RecyclerView 사용으로 UI 렌더링 최적화
 안정성: Android 시스템 API 사용으로 안정성 확보
 경량성: 로컬 저장소만 활용해 빠른 실행
 
-1. MainActivity.java(메인화면 구현)
-![image](https://github.com/user-attachments/assets/082a3beb-2181-43f6-8b9e-929f415f7d90)
 
 
 
