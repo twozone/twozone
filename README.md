@@ -145,3 +145,140 @@ ScheduleAddActivity.java
 8	반복 일정 기능 -> ScheduleAddActivity.java 수정
 9	일정 공유 기능 -> 공유 기능 코드 추가
 
+📌설계 문서 작성
+
+1. 소개
+1-1 목적
+이 문서는 GameAlarm 시스템의 소프트웨어 아키텍처를 다각도로 설명하며, 설계에 있어 중요한 결정을 문서화하고 팀원들이 이해할 수 있도록 하는 것을 목표로 한다.
+
+1-2 범위
+이 문서는 GameAlarm 앱의 주요 기능, 데이터 저장 방식(JSON), 알람 처리 로직, 반복 일정 및 공유 기능 등 전체 시스템 구조에 영향을 주는 내용을 다룬다.
+
+1-3 용어 정의
+GameAlarm: 유저가 게임별 일정을 관리할 수 있는 안드로이드 앱
+JSON: 일정 데이터 저장을 위한 구조화된 문자열 포맷
+SharedPreferences: Android의 기본 로컬 저장소
+
+1-4 참고 자료
+Android 개발자 문서
+Gson 라이브러리 문서
+Firebase 클라우드 메시징 (향후 확장 고려)
+
+1-5 문서 구성
+이 문서는 5가지 아키텍처 뷰(유스케이스, 논리, 프로세스, 배포, 구현)에 따라 내용을 설명하며, JSON 기반의 데이터 흐름 및 저장 구조를 포함한다.
+
+2. 아키텍처 표현 방식
+논리 뷰: Game, Schedule, DataManager 클래스 중심 구조
+유스케이스 뷰: 게임 등록, 일정 등록, 알림 설정, 반복 설정, 일정 공유
+프로세스 뷰: 알람 등록 및 Notification 발송 흐름
+배포 뷰: 안드로이드 단말기 로컬 저장소 기반
+구현 뷰: 액티비티 중심 Java 기반 앱 구조
+
+3. 아키텍처 목표 및 제약 사항
+3-1 목표
+유저가 여러 게임의 일정을 쉽게 관리
+반복 알림, 공유 기능 제공
+직관적인 UI와 가벼운 구조
+
+3-2 제약 사항
+로컬 저장소만 사용
+Room DB가 아닌 JSON + SharedPreferences 사용
+Java 기반 구현
+
+4. 유스케이스 뷰
+게임 추가 : 게임 이름과 아이콘 선택 후 저장
+일정 추가 : 일정 제목, 날짜, 시간, 메모 입력 후 저장
+반복 일정 설정 : 매일, 매주, 특정 요일 반복 선택
+알림 설정 : 시간 도래시 Notification 발송
+일정 공유 : JSON 또는 QR을 통한 내보내기 / 가져오기
+
+4-1 유스케이스 실현
+일정 저장 → SharedPreferences에 JSON 저장
+알림 설정 → AlarmManager 사용해 예약
+공유 기능 → Gson으로 변환 → Intent 또는 QR코드 생성
+
+5. 논리 뷰
+5-1 개요
+Game, Schedule 클래스 기반으로 설계
+Datamanager는 JSON 변환 및 저장 처리 담당
+
+5.2 설계 패키지 상세
+5-2-1 Game 클래스
+public class Game {
+    public int id;
+    public String name;
+    public String iconUri;
+}
+
+5-2-2 Schedule 클래스
+public class Schedule {
+    public int id;
+    public int gameId;
+    public String title;
+    public String date;
+    public String time;
+    public String memo;
+    public boolean isRepeating;
+    public String repeatType;
+    public List<String> repeatDays;
+}
+
+5-2-3 DataManager 클래스
+JSON 저장/불러오기 처리
+SharedPreferences에 "games와 "schedule키로 저장
+
+6. 프로세스 뷰
+알람 설정 시 AlarmManager 사용
+알람 시간 도달 시 AlarmReceiver(BroadcastReceiver)가 Notification 생성
+반복 일정은 앱 시작 시 재등록 처리
+
+7. 배포 뷰
+물리노드 : 안드로이드 스마트폰
+저장소 위치 : SharedPreferences
+네트워크 : 로컬 기반
+
+8. 구현 뷰
+8-1 개요
+Activity 위주로 구성된 단일 모듈 구조
+주요 구성요소 : UI 레이어, 데이터 레이어, 알림 처리 레이어
+
+8-2 레이어 구성
+UI 레이어 : MainActivity, GameDetailActivity, ScheduleAddActivity
+데이터 레이어 : Game, Schedule, DataManager
+서비스 레이어 : AlarmReceiver, 알람 등록 로직
+
+9. 데이터 뷰
+형태 : JSON(문자열 형태로 저장)
+저장소 : SharedPreferences
+처리 도구 : Gson 라이브러리 사용
+
+예시코드
+[
+  {
+    "id": 1,
+    "gameId": 2,
+    "title": "일일 퀘스트",
+    "date": "2025-05-21",
+    "time": "10:00",
+    "isRepeating": true,
+    "repeatType": "weekly",
+    "repeatDays": ["월", "수", "금"]
+  }
+]
+
+10. 크기 및 성능
+소규모 유저 데이터에 최적화
+성능 이슈 없이 수백 건의 일정 처리 가능
+RecyclerView 사용으로 UI 렌더링 최적화
+
+11. 품질 속성
+품질 속성
+유지보수성: 간단한 JSON 구조로 유지보수 용이
+확장성: 서버 연동 및 Firebase 기능 향후 추가 가능
+안정성: Android 시스템 API 사용으로 안정성 확보
+경량성: 로컬 저장소만 활용해 빠른 실행
+
+
+
+
+
