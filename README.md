@@ -273,13 +273,14 @@ RecyclerView 사용으로 UI 렌더링 최적화
 안정성: Android 시스템 API 사용으로 안정성 확보
 경량성: 로컬 저장소만 활용해 빠른 실행
 
-1. 메인화면(MainActivity)
-   ![image](https://github.com/user-attachments/assets/bc9379ab-cd88-4347-b53f-36fe434015eb)
+메인화면(MainActivity)
+![image](https://github.com/user-attachments/assets/bc9379ab-cd88-4347-b53f-36fe434015eb)
 
-2. 일정 추가 화면
-   ![image](https://github.com/user-attachments/assets/d699f6ae-8aec-4a1a-9151-891e65a3b7f8)
+일정 추가 화면
+![image](https://github.com/user-attachments/assets/d699f6ae-8aec-4a1a-9151-891e65a3b7f8)
 
-3. 캘린더 화면
+캘린더 화면
+![image](https://github.com/user-attachments/assets/e0b986b5-095c-495f-a6bd-3821db85cf4d)
 
 
 
